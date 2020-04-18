@@ -17,7 +17,6 @@ public class PasswordUtil {
         int workload = 12;
 
         String salt = BCrypt.gensalt(workload);
-        System.out.println(salt);
         return BCrypt.hashpw(password_plaintext, salt);
 
     }

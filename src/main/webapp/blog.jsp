@@ -52,11 +52,12 @@
                 <form class="form-inline" action="${pageContext.request.contextPath}/login" method="post">
                     <div class="form-group mb-2">
                         <label for="name" class="sr-only">Username</label>
-                        <input type="text" class="form-control" id="name" placeholder="email@example.com"  name="username">
+                        <input type="text" class="form-control ${requestScope.hasError ? 'is-invalid' : ''} ${requestScope.registered ? 'is-valid' : ''}" id="name" placeholder="email@example.com"  name="username">
                     </div>
+
                     <div class="form-group mx-sm-3 mb-2">
                         <label for="password" class="sr-only">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                        <input type="password" class="form-control ${requestScope.hasError ? 'is-invalid' : ''} ${requestScope.registered ? 'is-valid' : ''}" id="password" placeholder="Password" name="password">
                     </div>
 
                     <button type="submit" class="btn btn-primary mb-2" name="action" value="login">Log in</button>

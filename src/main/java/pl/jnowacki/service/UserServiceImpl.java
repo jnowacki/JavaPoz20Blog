@@ -4,6 +4,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import pl.jnowacki.dao.UserDao;
 import pl.jnowacki.dao.UserDaoDBImpl;
 import pl.jnowacki.model.User;
+import pl.jnowacki.util.EmailUtil;
 import pl.jnowacki.util.PasswordUtil;
 
 public class UserServiceImpl implements UserService {
@@ -31,11 +32,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void registerUser(String username, String password) {
+    public void registerUser(String username, String password, String path) {
 
         int tokenLength = 50;
         String token = RandomStringUtils.randomAlphanumeric(tokenLength);
 
-        userDao.createUser(username, PasswordUtil.hashPassword(password), token);
+        if(userDao.createUser(username, PasswordUtil.hashPassword(password), token)) {
+            EmailUtil.sendActivationEmail(username, token, path);
+        }
     }
 }

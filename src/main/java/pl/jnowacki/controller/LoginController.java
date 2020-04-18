@@ -52,8 +52,10 @@ public class LoginController extends HttpServlet {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
-        userService.registerUser(username, password);
-        resp.sendRedirect(req.getContextPath() + "/");
+        userService.registerUser(username, password, req.getContextPath());
+
+        req.setAttribute("registered", true);
+        getServletContext().getRequestDispatcher("/blog.jsp").forward(req, resp);
     }
 
     private void loginUser(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
