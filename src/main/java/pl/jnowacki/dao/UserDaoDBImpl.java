@@ -38,8 +38,10 @@ public class UserDaoDBImpl implements UserDao {
                 Long id = rs.getLong("id");
                 String userName = rs.getString("username");
                 String password = rs.getString("password");
+                Boolean active = rs.getBoolean("active");
+                String token = rs.getString("token");
 
-                return new User(id, userName, password);
+                return new User(id, userName, password, active, token);
             }
 
         } catch (SQLException e) {
@@ -47,5 +49,26 @@ public class UserDaoDBImpl implements UserDao {
         }
 
         return null;
+    }
+
+    @Override
+    public boolean createUser(String userLogin, String password, String token) {
+
+        String selectSQL = "INSERT INTO users(username, password, token) VALUES (?, ?, ?)";
+
+        try (Connection dbConnection = DbConnection.getDBConnection();
+             PreparedStatement preparedStatement = dbConnection.prepareStatement(selectSQL)) {
+
+            preparedStatement.setString(1, userLogin);
+            preparedStatement.setString(2, password);
+            preparedStatement.setString(3, token);
+
+            return preparedStatement.executeUpdate() == 1;
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return false;
     }
 }

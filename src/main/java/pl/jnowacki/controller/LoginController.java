@@ -33,6 +33,9 @@ public class LoginController extends HttpServlet {
             case "login":
                 loginUser(req, resp);
                 break;
+            case "register":
+                registerUser(req, resp);
+                break;
             case "logout":
             default:
                 logoutUser(req, resp);
@@ -43,6 +46,14 @@ public class LoginController extends HttpServlet {
         req.getSession().invalidate();
 
         getServletContext().getRequestDispatcher("/blog.jsp").forward(req, resp);
+    }
+
+    private void registerUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+
+        userService.registerUser(username, password);
+        resp.sendRedirect(req.getContextPath() + "/");
     }
 
     private void loginUser(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {

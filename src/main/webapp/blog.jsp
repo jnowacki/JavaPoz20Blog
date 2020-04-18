@@ -38,11 +38,11 @@
 
             <c:when test="${sessionScope.username != null}">
 
-                <h2>Witaj ${sessionScope.username}</h2>
+                <div class="text-white">Witaj ${sessionScope.username}</div>
 
                 <form action="${pageContext.request.contextPath}/login" method="post">
                     <input type="hidden" name="action" value="logout">
-                    <input type="submit" value="Log out">
+                    <input class="btn btn-info button-with-margin" type="submit" value="Log out">
                 </form>
 
             </c:when>
@@ -58,8 +58,9 @@
                         <label for="password" class="sr-only">Password</label>
                         <input type="password" class="form-control" id="password" placeholder="Password" name="password">
                     </div>
-                    <input type="hidden" name="action" value="login">
-                    <button type="submit" class="btn btn-primary btn-sm mb-2">Log in</button>
+
+                    <button type="submit" class="btn btn-primary mb-2" name="action" value="login">Log in</button>
+                    <button type="submit" class="btn btn-primary mb-2 button-with-margin" name="action" value="register">Register</button>
                 </form>
 
             </c:otherwise>
