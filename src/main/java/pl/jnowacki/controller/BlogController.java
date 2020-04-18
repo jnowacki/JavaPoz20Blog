@@ -1,4 +1,4 @@
-package pl.jnowacki;
+package pl.jnowacki.controller;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +9,7 @@ import java.io.IOException;
 
 @WebServlet(value = "", name = "BlogServlet")
 public class BlogController extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         getServletContext().getRequestDispatcher("/blog.jsp").forward(req, resp);

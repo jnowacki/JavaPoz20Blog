@@ -34,6 +34,38 @@
 <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
     <div class="container">
 
+        <c:choose>
+
+            <c:when test="${sessionScope.username != null}">
+
+                <h2>Witaj ${sessionScope.username}</h2>
+
+                <form action="${pageContext.request.contextPath}/login" method="post">
+                    <input type="hidden" name="action" value="logout">
+                    <input type="submit" value="Log out">
+                </form>
+
+            </c:when>
+
+            <c:otherwise>
+
+                <form class="form-inline" action="${pageContext.request.contextPath}/login" method="post">
+                    <div class="form-group mb-2">
+                        <label for="name" class="sr-only">Username</label>
+                        <input type="text" class="form-control" id="name" placeholder="email@example.com"  name="username">
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                        <label for="password" class="sr-only">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                    </div>
+                    <input type="hidden" name="action" value="login">
+                    <button type="submit" class="btn btn-primary btn-sm mb-2">Log in</button>
+                </form>
+
+            </c:otherwise>
+
+        </c:choose>
+
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             Menu
             <i class="fas fa-bars"></i>
