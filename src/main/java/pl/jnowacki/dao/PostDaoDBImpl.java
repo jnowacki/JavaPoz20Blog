@@ -53,4 +53,33 @@ public class PostDaoDBImpl implements PostDao {
 
         return posts;
     }
+
+    @Override
+    public Post getPost(Long postId) {
+
+        String selectSQL = "SELECT * FROM posts WHERE id = ?";
+
+        try (Connection dbConnection = DbConnection.getDBConnection();
+             PreparedStatement preparedStatement = dbConnection.prepareStatement(selectSQL)) {
+
+            preparedStatement.setLong(1, postId);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+
+                Long id = rs.getLong("id");
+                Long authorId = rs.getLong("author_id");
+                String authorName = rs.getString("author");
+                String title = rs.getString("title");
+                String body = rs.getString("body");
+
+                return new Post(id, authorId, authorName, title, body);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+    }
 }
