@@ -60,4 +60,15 @@ public class Post implements Serializable {
     public void setBody(String body) {
         this.body = body;
     }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", authorId=" + authorId +
+                ", authorName='" + authorName + '\'' +
+                ", title='" + title + '\'' +
+                ", body='" + body + '\'' +
+                '}';
+    }
 }
