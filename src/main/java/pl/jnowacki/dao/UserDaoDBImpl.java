@@ -71,4 +71,23 @@ public class UserDaoDBImpl implements UserDao {
 
         return false;
     }
+
+    @Override
+    public boolean activateUser(String token) {
+
+        String selectSQL = "UPDATE users SET active = true WHERE token = ? AND active = false";
+
+        try (Connection dbConnection = DbConnection.getDBConnection();
+             PreparedStatement preparedStatement = dbConnection.prepareStatement(selectSQL)) {
+
+            preparedStatement.setString(1, token);
+
+            return preparedStatement.executeUpdate() == 1;
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return false;
+    }
 }

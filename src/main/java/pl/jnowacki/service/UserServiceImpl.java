@@ -28,17 +28,26 @@ public class UserServiceImpl implements UserService {
     public boolean isUserValid(String username, String password) {
         User user = userDao.getUser(username);
 
-        return user != null && PasswordUtil.checkPassword(password, user.getPassword());
+        return user != null && PasswordUtil.checkPassword(password, user.getPassword()) && user.getActive();
     }
 
     @Override
-    public void registerUser(String username, String password, String path) {
+    public boolean registerUser(String username, String password, String path) {
 
         int tokenLength = 50;
         String token = RandomStringUtils.randomAlphanumeric(tokenLength);
 
         if(userDao.createUser(username, PasswordUtil.hashPassword(password), token)) {
             EmailUtil.sendActivationEmail(username, token, path);
+
+            return true;
         }
+
+        return false;
+    }
+
+    @Override
+    public boolean activateUser(String token) {
+        return userDao.activateUser(token);
     }
 }

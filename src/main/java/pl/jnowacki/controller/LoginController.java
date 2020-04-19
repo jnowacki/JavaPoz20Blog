@@ -1,5 +1,6 @@
 package pl.jnowacki.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import pl.jnowacki.service.UserService;
 import pl.jnowacki.service.UserServiceImpl;
 
@@ -17,10 +18,18 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getSession().getAttribute("username") == null) {
-            getServletContext().getRequestDispatcher("/blog.jsp").forward(req, resp);
+        String token = req.getParameter("token");
+
+        boolean isActivated = false;
+
+        if(StringUtils.isNotEmpty(token)) {
+            isActivated = userService.activateUser(token);
+        }
+
+        if(isActivated) {
+            resp.getWriter().println("Aktywowano twojego uzytkownika!");
         } else {
-            resp.sendRedirect(req.getContextPath() + "/");
+            resp.getWriter().println("Cos poszlo nie tak :(");
         }
     }
 
@@ -44,18 +53,19 @@ public class LoginController extends HttpServlet {
 
     private void logoutUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
         req.getSession().invalidate();
-
-        getServletContext().getRequestDispatcher("/blog.jsp").forward(req, resp);
+        resp.sendRedirect(req.getContextPath() + "/");
     }
 
     private void registerUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
-        userService.registerUser(username, password, req.getContextPath());
+        if (userService.registerUser(username, password, req.getContextPath())) {
+            resp.sendRedirect(req.getContextPath() + "/?registered=true");
+        } else {
+            resp.sendRedirect(req.getContextPath() + "/?hasError=true");
+        }
 
-        req.setAttribute("registered", true);
-        getServletContext().getRequestDispatcher("/blog.jsp").forward(req, resp);
     }
 
     private void loginUser(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -66,8 +76,7 @@ public class LoginController extends HttpServlet {
             req.getSession().setAttribute("username", username);
             resp.sendRedirect(req.getContextPath() + "/");
         } else {
-            req.setAttribute("hasError", true);
-            getServletContext().getRequestDispatcher("/blog.jsp").forward(req, resp);
+            resp.sendRedirect(req.getContextPath() + "/?hasError=true");
         }
     }
 }
