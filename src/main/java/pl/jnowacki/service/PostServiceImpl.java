@@ -33,4 +33,9 @@ public class PostServiceImpl implements PostService {
     public Post getPost(Long id) {
         return postDao.getPost(id);
     }
+
+    @Override
+    public boolean addPost(String author, Long authorId, String title, String body) {
+        return postDao.addPost(author, authorId, title, body);
+    }
 }

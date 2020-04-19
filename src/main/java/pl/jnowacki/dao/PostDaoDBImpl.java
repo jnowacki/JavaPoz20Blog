@@ -82,4 +82,26 @@ public class PostDaoDBImpl implements PostDao {
 
         return null;
     }
+
+    @Override
+    public boolean addPost(String author, Long authorId, String title, String body) {
+
+        String selectSQL = "INSERT INTO posts(author, author_id, title, body) VALUES (?, ?, ?, ?)";
+
+        try (Connection dbConnection = DbConnection.getDBConnection();
+             PreparedStatement preparedStatement = dbConnection.prepareStatement(selectSQL)) {
+
+            preparedStatement.setString(1, author);
+            preparedStatement.setLong(2, authorId);
+            preparedStatement.setString(3, title);
+            preparedStatement.setString(4, body);
+
+            return preparedStatement.executeUpdate() == 1;
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return false;
+    }
 }

@@ -50,4 +50,9 @@ public class UserServiceImpl implements UserService {
     public boolean activateUser(String token) {
         return userDao.activateUser(token);
     }
+
+    @Override
+    public User getUser(String username) {
+        return userDao.getUser(username);
+    }
 }
